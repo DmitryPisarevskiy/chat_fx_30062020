@@ -16,7 +16,7 @@ public class Server {
     private AuthService authService;
     final static String AUTH_OK="/authok ";
     final static String AUTH="/auth ";
-    final static String END="/end ";
+    final static String END="/end";
     final static String SEND_EXACT_USERS="/w ";
 
     public static String getAuthOk() {

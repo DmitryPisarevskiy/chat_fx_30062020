@@ -16,24 +16,12 @@ public class Server {
     private AuthService authService;
     final static String AUTH_OK="/authok ";
     final static String AUTH="/auth ";
-    final static String END="/end ";
+    final static String END="/end";
     final static String SEND_EXACT_USERS="/w ";
-
-    public static String getAuthOk() {
-        return AUTH_OK;
-    }
-
-    public static String getAUTH() {
-        return AUTH;
-    }
-
-    public static String getEND() {
-        return END;
-    }
-
-    public static String getSendExactUsers() {
-        return SEND_EXACT_USERS;
-    }
+    final static String WHO_LOGGED_IN="/new client ";
+    final static String REG="/reg ";
+    final static String REG_RESULT ="/regresult ";
+    final static String CLIENT_LIST ="/clientlist ";
 
     public AuthService getAuthService() {
         return authService;
@@ -86,13 +74,43 @@ public class Server {
 
     public void subscribe(ClientHandler clientHandler){
         clients.add(clientHandler);
+        broadcastClientList();
     }
 
     public void unsubscribe(ClientHandler clientHandler){
+        if (!clientHandler.getNick().equals(null)) {
+            broadcastMsg(clientHandler.getNick()+" вышел из чата");
+        }
         clients.remove(clientHandler);
+        broadcastClientList();
     }
 
     public List<ClientHandler> getClients() {
         return clients;
+    }
+
+    public void broadcastMsg(String s) {
+        for (ClientHandler client : clients) {
+            client.sendMsg(s);
+        }
+    }
+
+    public void broadcastClientList() {
+        StringBuilder sb=new StringBuilder("");
+        sb.append(CLIENT_LIST);
+        for (ClientHandler client : clients) {
+            sb.append(client.getNick()).append(" ");
+        }
+        String str=sb.toString();
+        broadcastMsg(str);
+    }
+
+    public Boolean nickIsOnLine(String nick) {
+        for (ClientHandler client : clients) {
+            if (client.getNick().equals(nick))  {
+                return true;
+            }
+        }
+        return false;
     }
 }

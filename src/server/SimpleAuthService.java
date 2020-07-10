@@ -48,12 +48,14 @@ public class SimpleAuthService implements AuthService {
     }
 
     @Override
-    public Boolean nickIsOnLine(Server server, String nick) {
-        for (ClientHandler client : server.getClients()) {
-            if (client.getNick().equals(nick))  {
-                return true;
+    public Boolean registration(String login, String password, String nickname) {
+        for (UserData user : users) {
+            if (user.login.equals(login) || user.nickname.equals(nickname)) {
+                return false;
             }
         }
-        return false;
+        users.add(new UserData(login, password,nickname));
+        return true;
     }
+
 }

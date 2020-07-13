@@ -15,8 +15,8 @@ public class ClientHandler {
 
     private String nick;
     private String login;
-    private boolean clientIsAuth;
-    private final int SOCKET_TIME_OUT = 120000;
+    protected boolean clientIsAuth;
+    private final int SOCKET_TIME_OUT = 5000;
 
     public ClientHandler(Server server, Socket socket) {
         try {
@@ -63,6 +63,7 @@ public class ClientHandler {
                                     System.out.printf("Клиент %s подключился \n", nick);
                                     server.broadcastMsg(Server.WHO_LOGGED_IN + nick);
                                     clientIsAuth = true;
+                                    socket.setSoTimeout(0);
                                     break;
                                 } else {
                                     sendMsg("Пользователь с данным логином уже зашел в чат");

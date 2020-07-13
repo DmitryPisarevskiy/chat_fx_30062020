@@ -78,7 +78,7 @@ public class Server {
     }
 
     public void unsubscribe(ClientHandler clientHandler){
-        if (!clientHandler.getNick().equals(null)) {
+        if (clientHandler.clientIsAuth) {
             broadcastMsg(clientHandler.getNick()+" вышел из чата");
         }
         clients.remove(clientHandler);
